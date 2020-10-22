@@ -35,9 +35,11 @@ class hubspot_helper {
   public static function get_form_embed_html($guid, $portalId) {
     return sprintf('
       <script>
-        hbspt.forms.create({
-          portalId: "%s",
-          formId: "%s"
+        document.addEventListener("DOMContentLoaded", function() {
+          hbspt.forms.create({
+            portalId: "%s",
+            formId: "%s"
+          });
         });
       </script>', $portalId, $guid);
   }
