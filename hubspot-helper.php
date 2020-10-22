@@ -6,16 +6,16 @@ class hubspot_helper {
   function __construct ($api_key) {
     if (!function_exists('wp_remote_request')) throw new Exception("Global function required: wp_remote_request");
 
-    if ($api_key)
-      $this->api_key = $api_key;
-    else
-      throw new Exception("Hubspot API key required");
+    $this->api_key = $api_key;
   }
 
   /**
    * Make a GET request and return the response.
    */
   function get ($url, $args = array()) {
+    if (!$this->api_key)
+      throw new Exception("Hubspot API key required");
+      
     return wp_remote_get(self::API_BASE_URL . $url . '?hapikey=' . $this->api_key, $args);
   }
 
