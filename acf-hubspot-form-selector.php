@@ -29,8 +29,8 @@ class my_acf_plugin_hubspot_form_selector {
 	*  This function will setup the class functionality
 	*
 	*  @type	function
-	*  @date	17/02/2016
-	*  @since	1.0.0
+	*  @date	06/12/2023
+	*  @since	2.0.0
 	*
 	*  @param	void
 	*  @return	void
@@ -41,7 +41,7 @@ class my_acf_plugin_hubspot_form_selector {
 		// settings
 		// - these will be passed into the field class.
 		$this->settings = array(
-			'version'	=> '1.0.0',
+			'version'	=> '2.0.0',
 			'url'		=> plugin_dir_url( __FILE__ ),
 			'path'		=> plugin_dir_path( __FILE__ )
 		);
@@ -58,8 +58,8 @@ class my_acf_plugin_hubspot_form_selector {
 	*  This function will include the field type class
 	*
 	*  @type	function
-	*  @date	17/02/2016
-	*  @since	1.0.0
+	*  @date	06/12/2023
+	*  @since	2.0.0
 	*
 	*  @param	$version (int) major ACF version. Defaults to false
 	*  @return	void
