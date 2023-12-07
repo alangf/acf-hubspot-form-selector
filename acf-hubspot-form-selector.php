@@ -3,7 +3,7 @@
 /*
 Plugin Name: ACF: Hubspot form selector
 Description: ACF field to select a Hubspot form (requires Hubspot official plugin).
-Version: 1.0.0
+Version: 2.0.0
 Author: Alan Gomes
 Author URI: https://www.alangf.com
 License: GPLv2 or later
