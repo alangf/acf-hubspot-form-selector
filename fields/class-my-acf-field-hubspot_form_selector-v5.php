@@ -72,9 +72,9 @@ class my_acf_field_hubspot_form_selector extends acf_field {
 		
 		$this->settings = $settings;
 
- 		$hubspot_api_key = get_field('hubspot_api_key', 'option');
+ 		$hubspot_access_token = get_field('hubspot_access_token', 'option');
 
-		$this->helper = new hubspot_helper($hubspot_api_key);
+		$this->helper = new hubspot_helper($hubspot_access_token);
 		
 		// do not delete!
     	parent::__construct();
@@ -89,8 +89,8 @@ class my_acf_field_hubspot_form_selector extends acf_field {
 	*  @param	$field (array) the $field being rendered
 	*
 	*  @type	action
-	*  @since	3.6
-	*  @date	23/01/13
+	*  @since	2.0.0
+	*  @date	2023/12/06
 	*
 	*  @param	$field (array) the $field being edited
 	*  @return	n/a
@@ -98,24 +98,30 @@ class my_acf_field_hubspot_form_selector extends acf_field {
 	
 	function render_field( $field ) {
 
-		// Get all forms from account.
-		$forms = $this->helper->get_forms();
-		
-		/*
-		*  Create a simple text input using the 'font_size' setting.
-		*/
-		echo sprintf('<select name="%s" value="%s">', esc_attr($field['name']), esc_attr($field['value']));
-		echo '	<option value=""></option>';
+		try {
+			// Get all forms from account.
+			$forms = $this->helper->get_forms();
+			
+			/*
+			*  Create a simple text input using the 'font_size' setting.
+			*/
+			echo sprintf('<select name="%s" value="%s">', esc_attr($field['name']), esc_attr($field['value']));
+			echo '	<option value=""></option>';
 
-		foreach ($forms as $form) :
-			$value = sprintf("%s_%s", $form->guid, $form->portalId);
-			echo sprintf('	<option value="%s" %s>%s</option>', $value, $field['value'] === $value ? 'selected' : '', $form->name);
-		endforeach;
+			foreach ($forms as $form) :
+				$value = sprintf("%s_%s", $form->guid, $form->portalId);
+				echo sprintf('	<option value="%s" %s>%s</option>', $value, $field['value'] === $value ? 'selected' : '', $form->name);
+			endforeach;
 
-		echo '</select>';
-		/*
-		<input type="text" name="<?php echo esc_attr($field['name']) ?>" value="<?php echo esc_attr($field['value']) ?>" style="font-size:<?php echo $field['font_size'] ?>px;" />
-		*/
+			echo '</select>';
+		}
+		catch (Exception $e) {
+			$current_page = http_build_query($_GET);
+			$set_message = $current_page !== "page=acf-options" 
+			 ? "<p>Set the token in the <a href='" . admin_url('admin.php?page=acf-options') . "'>options page</a>.</p>"
+			 : "";
+			echo "<div style='color: red'>" . $e->getMessage() . $set_message . "</div>";
+		}
 	}
 	
 
@@ -125,8 +131,8 @@ class my_acf_field_hubspot_form_selector extends acf_field {
 	*  This filter is applied to the $value after it is loaded from the db
 	*
 	*  @type	filter
-	*  @since	3.6
-	*  @date	23/01/13
+	*  @since	2.0.0
+	*  @date	2023/12/06
 	*
 	*  @param	$value (mixed) the value found in the database
 	*  @param	$post_id (mixed) the $post_id from which the value was loaded
@@ -149,8 +155,8 @@ class my_acf_field_hubspot_form_selector extends acf_field {
 	*  This filter is appied to the $value after it is loaded from the db and before it is returned to the template
 	*
 	*  @type	filter
-	*  @since	3.6
-	*  @date	23/01/13
+	*  @since	2.0.0
+	*  @date	2023/12/06
 	*
 	*  @param	$value (mixed) the value which was loaded from the database
 	*  @param	$post_id (mixed) the $post_id from which the value was loaded
